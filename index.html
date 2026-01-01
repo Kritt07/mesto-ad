@@ -56,6 +56,7 @@
                 maxlength="40"
                 data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
                 pattern="^[a-zA-Zа-яА-ЯёЁ -]+$"
+                required
               />
               <span class="popup__error" id="user-name-error"></span>
             </label>
@@ -68,6 +69,7 @@
                 placeholder="Занятие"
                 minlength="2"
                 maxlength="200"
+                required
               />
               <span class="popup__error" id="user-description-error"></span>
             </label>
@@ -98,6 +100,7 @@
                 maxlength="30"
                 pattern="^[a-zA-Zа-яА-ЯёЁ -]+$"
                 data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
+                required
               />
               <span class="popup__error" id="place-name-error"></span>
             </label>
@@ -108,6 +111,7 @@
                 id="place-link"
                 class="popup__input popup__input_type_url"
                 placeholder="Ссылка на картинку"
+                required
               />
               <span class="popup__error" id="place-link-error"></span>
             </label>
@@ -157,6 +161,7 @@
                 id="user-avatar"
                 class="popup__input popup__input_type_avatar"
                 placeholder="Ссылка на изображение"
+                required
               />
               <span class="popup__error" id="user-avatar-error"></span>
             </label>
