@@ -52,6 +52,9 @@ const avatarFormModalWindow = document.querySelector(".popup_type_edit-avatar");
 const avatarForm = avatarFormModalWindow.querySelector(".popup__form");
 const avatarInput = avatarForm.querySelector(".popup__input");
 
+// Переменная для хранения id текущего пользователя
+let currentUserId = null;
+
 const handlePreviewPicture = ({ name, link }) => {
   imageElement.src = link;
   imageElement.alt = name;
@@ -101,8 +104,10 @@ const handleCardFormSubmit = (evt) => {
       onPreviewPicture: handlePreviewPicture,
       onLikeIcon: likeCard,
       onDeleteCard: deleteCard,
+      currentUserId: currentUserId,
     }));
     closeModalWindow(cardFormModalWindow);
+    cardForm.reset();
   })
   .catch((err) => {
     console.log(err);
@@ -142,18 +147,23 @@ allPopups.forEach((popup) => {
 
 Promise.all([getCardList(), getUserInfo()])
   .then(([cards, userData]) => {
+    // Сохраняем id текущего пользователя
+    currentUserId = userData._id;
+    
+    profileAvatar.style.backgroundImage = `url(${userData.avatar})`;
+    profileTitle.textContent = userData.name;
+    profileDescription.textContent = userData.about;
+    
     cards.forEach((data) => {
       placesWrap.append(
         createCardElement(data, {
           onPreviewPicture: handlePreviewPicture,
           onLikeIcon: likeCard,
           onDeleteCard: deleteCard,
+          currentUserId: currentUserId,
         })
       );
-      profileAvatar.style.backgroundImage = `url(${userData.avatar})`,
-      profileTitle.textContent = userData.name
-      profileDescription.textContent = userData.about
-    })
+    });
   })
   .catch((err) => {
     console.log(err);

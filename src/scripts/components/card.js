@@ -15,7 +15,7 @@ const getTemplate = () => {
 
 export const createCardElement = (
   data,
-  { onPreviewPicture, onLikeIcon, onDeleteCard }
+  { onPreviewPicture, onLikeIcon, onDeleteCard, currentUserId }
 ) => {
   const cardElement = getTemplate();
   const likeButton = cardElement.querySelector(".card__like-button");
@@ -26,12 +26,23 @@ export const createCardElement = (
   cardImage.alt = data.name;
   cardElement.querySelector(".card__title").textContent = data.name;
 
-  if (onLikeIcon) {
-    likeButton.addEventListener("click", () => onLikeIcon(likeButton));
+  // Получаем id автора карточки (может быть объект owner._id или строка owner)
+  const cardOwnerId = data.owner._id;
+
+  // Показываем кнопку удаления только если карточка принадлежит текущему пользователю
+  if (currentUserId && cardOwnerId === currentUserId) {
+    // Кнопка видима (используем значение по умолчанию или удаляем скрытие)
+    deleteButton.style.display = "";
+    if (onDeleteCard) {
+      deleteButton.addEventListener("click", () => onDeleteCard(cardElement));
+    }
+  } else {
+    // Скрываем кнопку удаления для чужих карточек
+    deleteButton.style.display = "none";
   }
 
-  if (onDeleteCard) {
-    deleteButton.addEventListener("click", () => onDeleteCard(cardElement));
+  if (onLikeIcon) {
+    likeButton.addEventListener("click", () => onLikeIcon(likeButton));
   }
 
   if (onPreviewPicture) {
