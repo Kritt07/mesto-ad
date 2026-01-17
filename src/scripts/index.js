@@ -6,7 +6,7 @@
   Из index.js не допускается что то экспортировать
 */
 
-import { getCardList, getUserInfo, setUserInfo, setUserAvatar} from "./components/api.js";
+import { getCardList, getUserInfo, setUserInfo, setUserAvatar, addCard} from "./components/api.js";
 import { createCardElement, deleteCard, likeCard } from "./components/card.js";
 import { openModalWindow, closeModalWindow, setCloseModalWindowEventListeners } from "./components/modal.js";
 import { enableValidation, clearValidation } from "./components/validation.js";
@@ -92,21 +92,21 @@ const handleAvatarFromSubmit = (evt) => {
 
 const handleCardFormSubmit = (evt) => {
   evt.preventDefault();
-  placesWrap.prepend(
-    createCardElement(
-      {
-        name: cardNameInput.value,
-        link: cardLinkInput.value,
-      },
-      {
-        onPreviewPicture: handlePreviewPicture,
-        onLikeIcon: likeCard,
-        onDeleteCard: deleteCard,
-      }
-    )
-  );
-
-  closeModalWindow(cardFormModalWindow);
+  addCard({
+    name: cardNameInput.value,
+    link: cardLinkInput.value,
+  })
+  .then((data) => {
+    placesWrap.prepend(createCardElement(data, {
+      onPreviewPicture: handlePreviewPicture,
+      onLikeIcon: likeCard,
+      onDeleteCard: deleteCard,
+    }));
+    closeModalWindow(cardFormModalWindow);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 };
 
 // EventListeners
