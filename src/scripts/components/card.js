@@ -2,8 +2,16 @@ export const likeCard = (likeButton) => {
   likeButton.classList.toggle("card__like-button_is-active");
 };
 
-export const deleteCard = (cardElement) => {
-  cardElement.remove();
+export const deleteCard = (cardElement, cardId, deleteCardFromServer) => {
+  // Удаляем карточку с сервера
+  deleteCardFromServer({ cardId })
+    .then(() => {
+      // Если удаление на сервере успешно, удаляем элемент из DOM
+      cardElement.remove();
+    })
+    .catch((err) => {
+      console.error("Ошибка при удалении карточки:", err);
+    });
 };
 
 const getTemplate = () => {
@@ -26,18 +34,15 @@ export const createCardElement = (
   cardImage.alt = data.name;
   cardElement.querySelector(".card__title").textContent = data.name;
 
-  // Получаем id автора карточки (может быть объект owner._id или строка owner)
   const cardOwnerId = data.owner._id;
 
   // Показываем кнопку удаления только если карточка принадлежит текущему пользователю
   if (currentUserId && cardOwnerId === currentUserId) {
-    // Кнопка видима (используем значение по умолчанию или удаляем скрытие)
     deleteButton.style.display = "";
     if (onDeleteCard) {
-      deleteButton.addEventListener("click", () => onDeleteCard(cardElement));
+      deleteButton.addEventListener("click", () => onDeleteCard(cardElement, data._id));
     }
   } else {
-    // Скрываем кнопку удаления для чужих карточек
     deleteButton.style.display = "none";
   }
 

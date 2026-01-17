@@ -6,7 +6,7 @@
   Из index.js не допускается что то экспортировать
 */
 
-import { getCardList, getUserInfo, setUserInfo, setUserAvatar, addCard} from "./components/api.js";
+import { getCardList, getUserInfo, setUserInfo, setUserAvatar, addCard, deleteCardFromServer } from "./components/api.js";
 import { createCardElement, deleteCard, likeCard } from "./components/card.js";
 import { openModalWindow, closeModalWindow, setCloseModalWindowEventListeners } from "./components/modal.js";
 import { enableValidation, clearValidation } from "./components/validation.js";
@@ -103,7 +103,7 @@ const handleCardFormSubmit = (evt) => {
     placesWrap.prepend(createCardElement(data, {
       onPreviewPicture: handlePreviewPicture,
       onLikeIcon: likeCard,
-      onDeleteCard: deleteCard,
+      onDeleteCard: (cardElement, cardId) => deleteCard(cardElement, cardId, deleteCardFromServer),
       currentUserId: currentUserId,
     }));
     closeModalWindow(cardFormModalWindow);
@@ -159,7 +159,7 @@ Promise.all([getCardList(), getUserInfo()])
         createCardElement(data, {
           onPreviewPicture: handlePreviewPicture,
           onLikeIcon: likeCard,
-          onDeleteCard: deleteCard,
+          onDeleteCard: (cardElement, cardId) => deleteCard(cardElement, cardId, deleteCardFromServer),
           currentUserId: currentUserId,
         })
       );
