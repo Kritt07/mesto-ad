@@ -6,7 +6,7 @@
   Из index.js не допускается что то экспортировать
 */
 
-import { getCardList, getUserInfo } from "./components/api.js";
+import { getCardList, getUserInfo, setUserInfo, setUserAvatar} from "./components/api.js";
 import { createCardElement, deleteCard, likeCard } from "./components/card.js";
 import { openModalWindow, closeModalWindow, setCloseModalWindowEventListeners } from "./components/modal.js";
 import { enableValidation, clearValidation } from "./components/validation.js";
@@ -78,8 +78,16 @@ const handleProfileFormSubmit = (evt) => {
 
 const handleAvatarFromSubmit = (evt) => {
   evt.preventDefault();
-  profileAvatar.style.backgroundImage = `url(${avatarInput.value})`;
-  closeModalWindow(avatarFormModalWindow);
+  setUserAvatar({
+    avatar: avatarInput.value,
+  })
+  .then((userData) => {
+    profileAvatar.style.backgroundImage = `url(${userData.avatar})`;
+    closeModalWindow(avatarFormModalWindow);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 };
 
 const handleCardFormSubmit = (evt) => {
@@ -142,11 +150,11 @@ Promise.all([getCardList(), getUserInfo()])
           onDeleteCard: deleteCard,
         })
       );
+      profileAvatar.style.backgroundImage = `url(${userData.avatar})`,
+      profileTitle.textContent = userData.name
+      profileDescription.textContent = userData.about
     })
   })
   .catch((err) => {
-    console.log(
-      "Что-то пошло не так...",
-      err
-    );
+    console.log(err);
   })
