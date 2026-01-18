@@ -37,7 +37,7 @@ export const createCardElement = (
   const cardOwnerId = data.owner._id;
 
   // Показываем кнопку удаления только если карточка принадлежит текущему пользователю
-  if (currentUserId && cardOwnerId === currentUserId) {
+  if (cardOwnerId == currentUserId) {
     deleteButton.style.display = "";
     if (onDeleteCard) {
       deleteButton.addEventListener("click", () => onDeleteCard(cardElement, data._id));

@@ -52,8 +52,12 @@ const avatarFormModalWindow = document.querySelector(".popup_type_edit-avatar");
 const avatarForm = avatarFormModalWindow.querySelector(".popup__form");
 const avatarInput = avatarForm.querySelector(".popup__input");
 
-// Переменная для хранения id текущего пользователя
-let currentUserId = null;
+const removeCardModalWindow = document.querySelector(".popup_type_remove-card");
+const removeCardForm = removeCardModalWindow.querySelector(".popup__form");
+
+// Переменные для хранения данных карточки, которую нужно удалить
+let cardToDelete = null;
+let cardIdToDelete = null;
 
 const handlePreviewPicture = ({ name, link }) => {
   imageElement.src = link;
@@ -93,6 +97,27 @@ const handleAvatarFromSubmit = (evt) => {
   });
 };
 
+const handleRemoveCardSubmit = (evt) => {
+  evt.preventDefault();
+  
+  if (cardToDelete && cardIdToDelete) {
+    // Вызываем функцию удаления с сохраненными данными
+    deleteCard(cardToDelete, cardIdToDelete, deleteCardFromServer);
+    closeModalWindow(removeCardModalWindow);
+    
+    // Очищаем сохраненные данные
+    cardToDelete = null;
+    cardIdToDelete = null;
+  }
+};
+
+// Обработчик открытия модального окна удаления
+const openRemoveCardModal = (cardElement, cardId) => {
+  cardToDelete = cardElement;
+  cardIdToDelete = cardId;
+  openModalWindow(removeCardModalWindow);
+};
+
 const handleCardFormSubmit = (evt) => {
   evt.preventDefault();
   addCard({
@@ -103,8 +128,8 @@ const handleCardFormSubmit = (evt) => {
     placesWrap.prepend(createCardElement(data, {
       onPreviewPicture: handlePreviewPicture,
       onLikeIcon: likeCard,
-      onDeleteCard: (cardElement, cardId) => deleteCard(cardElement, cardId, deleteCardFromServer),
-      currentUserId: currentUserId,
+      onDeleteCard: openRemoveCardModal,
+      currentUserId: data._id,
     }));
     closeModalWindow(cardFormModalWindow);
     cardForm.reset();
@@ -118,6 +143,7 @@ const handleCardFormSubmit = (evt) => {
 profileForm.addEventListener("submit", handleProfileFormSubmit);
 cardForm.addEventListener("submit", handleCardFormSubmit);
 avatarForm.addEventListener("submit", handleAvatarFromSubmit);
+removeCardForm.addEventListener("submit", handleRemoveCardSubmit);
 
 openProfileFormButton.addEventListener("click", () => {
   profileTitleInput.value = profileTitle.textContent;
@@ -147,9 +173,6 @@ allPopups.forEach((popup) => {
 
 Promise.all([getCardList(), getUserInfo()])
   .then(([cards, userData]) => {
-    // Сохраняем id текущего пользователя
-    currentUserId = userData._id;
-    
     profileAvatar.style.backgroundImage = `url(${userData.avatar})`;
     profileTitle.textContent = userData.name;
     profileDescription.textContent = userData.about;
@@ -159,8 +182,8 @@ Promise.all([getCardList(), getUserInfo()])
         createCardElement(data, {
           onPreviewPicture: handlePreviewPicture,
           onLikeIcon: likeCard,
-          onDeleteCard: (cardElement, cardId) => deleteCard(cardElement, cardId, deleteCardFromServer),
-          currentUserId: currentUserId,
+          onDeleteCard: openRemoveCardModal,
+          currentUserId: userData._id,
         })
       );
     });
