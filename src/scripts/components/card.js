@@ -1,5 +1,17 @@
-export const likeCard = (likeButton) => {
-  likeButton.classList.toggle("card__like-button_is-active");
+// export const likeCard = (likeButton) => {
+//   likeButton.classList.toggle("card__like-button_is-active");
+// };
+
+export const likeCard = (likeButton, cardId, changeLikeCardStatus) => {
+  // Проверяем, лайкнута ли карточка (есть ли класс is-active)
+  const isLiked = likeButton.classList.contains("card__like-button_is-active");
+  changeLikeCardStatus(cardId, isLiked)
+    .then(() => {
+      likeButton.classList.toggle("card__like-button_is-active");
+    })
+    .catch((err) => {
+      console.error("Ошибка при изменении статуса лайка:", err);
+    });
 };
 
 export const deleteCard = (cardElement, cardId, deleteCardFromServer) => {
@@ -46,8 +58,14 @@ export const createCardElement = (
     deleteButton.style.display = "none";
   }
 
+  // Проверяем, лайкнул ли текущий пользователь эту карточку
+  const isLikedByCurrentUser = data.likes.some(like => like._id === currentUserId);
+  if (isLikedByCurrentUser) {
+    likeButton.classList.add("card__like-button_is-active");
+  }
+
   if (onLikeIcon) {
-    likeButton.addEventListener("click", () => onLikeIcon(likeButton));
+    likeButton.addEventListener("click", () => onLikeIcon(likeButton, data._id));
   }
 
   if (onPreviewPicture) {
