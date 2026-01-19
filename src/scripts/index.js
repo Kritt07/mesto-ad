@@ -59,6 +59,11 @@ let cardToDelete = null;
 let cardIdToDelete = null;
 let userId;
 
+const changeSaveButton = (formELement, newValue) => {
+  let button = formELement.querySelector(".popup__button");
+  button.textContent = newValue;
+}
+
 const handlePreviewPicture = ({ name, link }) => {
   imageElement.src = link;
   imageElement.alt = name;
@@ -68,7 +73,7 @@ const handlePreviewPicture = ({ name, link }) => {
 
 const handleProfileFormSubmit = (evt) => {
   evt.preventDefault();
-  console.log(evt.tartget)
+  changeSaveButton(profileForm, "Сохранение..."),
   setUserInfo({
     name: profileTitleInput.value,
     about: profileDescriptionInput.value,
@@ -82,10 +87,12 @@ const handleProfileFormSubmit = (evt) => {
     .catch((err) => {
       console.log("ошибка при получении данных об имени и описании пользователя", err);
     })
+    .finally(() => changeSaveButton(profileForm, "Сохранить"))
 };
 
 const handleAvatarFromSubmit = (evt) => {
   evt.preventDefault();
+  changeSaveButton(avatarForm, "Сохранение..."),
   setUserAvatar({
     avatar: avatarInput.value,
   })
@@ -95,7 +102,8 @@ const handleAvatarFromSubmit = (evt) => {
   })
   .catch((err) => {
     console.log(err);
-  });
+  })
+  .finally(() => changeSaveButton(avatarForm, "Сохранить"));
 };
 
 const handleRemoveCardSubmit = (evt) => {
@@ -121,6 +129,7 @@ const openRemoveCardModal = (cardElement, cardId) => {
 
 const handleCardFormSubmit = (evt) => {
   evt.preventDefault();
+  changeSaveButton(cardForm, "Создание..."),
   addCard({
     name: cardNameInput.value,
     link: cardLinkInput.value,
@@ -137,7 +146,8 @@ const handleCardFormSubmit = (evt) => {
   })
   .catch((err) => {
     console.log(err);
-  });
+  })
+  .finally(() => changeSaveButton(cardForm, "Создать"));
 };
 
 // EventListeners
