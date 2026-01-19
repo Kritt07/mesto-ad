@@ -55,9 +55,9 @@ const avatarInput = avatarForm.querySelector(".popup__input");
 const removeCardModalWindow = document.querySelector(".popup_type_remove-card");
 const removeCardForm = removeCardModalWindow.querySelector(".popup__form");
 
-// Переменные для хранения данных карточки, которую нужно удалить
 let cardToDelete = null;
 let cardIdToDelete = null;
+let userId;
 
 const handlePreviewPicture = ({ name, link }) => {
   imageElement.src = link;
@@ -68,6 +68,7 @@ const handlePreviewPicture = ({ name, link }) => {
 
 const handleProfileFormSubmit = (evt) => {
   evt.preventDefault();
+  console.log(evt.tartget)
   setUserInfo({
     name: profileTitleInput.value,
     about: profileDescriptionInput.value,
@@ -79,8 +80,8 @@ const handleProfileFormSubmit = (evt) => {
       closeModalWindow(profileFormModalWindow);
     })
     .catch((err) => {
-      console.log(err);
-    });
+      console.log("ошибка при получении данных об имени и описании пользователя", err);
+    })
 };
 
 const handleAvatarFromSubmit = (evt) => {
@@ -129,7 +130,7 @@ const handleCardFormSubmit = (evt) => {
       onPreviewPicture: handlePreviewPicture,
       onLikeIcon: (likeButton, cardId) => likeCard(likeButton, cardId, changeLikeCardStatus),
       onDeleteCard: openRemoveCardModal,
-      currentUserId: data._id,
+      currentUserId: userId,
     }));
     closeModalWindow(cardFormModalWindow);
     cardForm.reset();
@@ -176,6 +177,7 @@ Promise.all([getCardList(), getUserInfo()])
     profileAvatar.style.backgroundImage = `url(${userData.avatar})`;
     profileTitle.textContent = userData.name;
     profileDescription.textContent = userData.about;
+    userId = userData._id;
     
     cards.forEach((data) => {
       placesWrap.append(
@@ -183,7 +185,7 @@ Promise.all([getCardList(), getUserInfo()])
           onPreviewPicture: handlePreviewPicture,
           onLikeIcon: (likeButton, cardId) => likeCard(likeButton, cardId, changeLikeCardStatus),
           onDeleteCard: openRemoveCardModal,
-          currentUserId: userData._id,
+          currentUserId: userId,
         })
       );
     });

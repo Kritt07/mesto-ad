@@ -6,7 +6,6 @@ const config = {
   },
 };
 
-/* Проверяем, успешно ли выполнен запрос, и отклоняем промис в случае ошибки. */
 const getResponseData = (res) => {
   return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
 };
@@ -39,7 +38,7 @@ export const setUserAvatar = ({ avatar }) => {
     method: "PATCH",
     headers: config.headers,
     body: JSON.stringify({
-      avatar,
+      avatar
     }),
   }).then(getResponseData);
 };
@@ -66,5 +65,5 @@ export const changeLikeCardStatus = (cardID, isLiked) => {
   return fetch(`${config.baseUrl}/cards/likes/${cardID}`, {
     method: isLiked ?  "DELETE" : "PUT",
     headers: config.headers,
-  }).then((res) => getResponseData(res));
+  }).then(getResponseData);
 };
