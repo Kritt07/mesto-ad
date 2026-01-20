@@ -8,14 +8,14 @@
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Mesto</title>
-    <script type="module" crossorigin src="/assets/index-D31U3jVb.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-SnSEsTOT.css">
+    <script type="module" crossorigin src="./assets/index-0OPlVUNs.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-DKwl_nIp.css">
   </head>
   <body class="page">
     <div class="page__content">
       <header class="header page__section">
         <img
-          src="/assets/logo-DQ1BIEMY.svg"
+          src="./assets/logo-DQ1BIEMY.svg"
           alt="Логотип проекта место"
           class="logo header__logo"
         />
@@ -24,12 +24,11 @@
         <section class="profile page__section">
           <div
             class="profile__image"
-            style="background-image: url('/assets/avatar-jDl9RI_U.jpg')"
           ></div>
           <div class="profile__info">
-            <h1 class="profile__title">Жак-Ив Кусто</h1>
+            <h1 class="profile__title"></h1>
             <button class="profile__edit-button" type="button"></button>
-            <p class="profile__description">Исследователь океана</p>
+            <p class="profile__description"></p>
           </div>
           <button class="profile__add-button" type="button"></button>
         </section>
@@ -56,7 +55,8 @@
                 minlength="2"
                 maxlength="40"
                 data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
-                pattern="^[a-zA-Zа-яА-ЯёЁ -]+$"
+                pattern="^[a-zA-Zа-яА-ЯЁё \-]+$"
+                required
               />
               <span class="popup__error" id="user-name-error"></span>
             </label>
@@ -69,6 +69,7 @@
                 placeholder="Занятие"
                 minlength="2"
                 maxlength="200"
+                required
               />
               <span class="popup__error" id="user-description-error"></span>
             </label>
@@ -97,8 +98,9 @@
                 placeholder="Название"
                 minlength="2"
                 maxlength="30"
-                pattern="^[a-zA-Zа-яА-ЯёЁ -]+$"
+                pattern="^[a-zA-Zа-яА-ЯЁё \-]+$"
                 data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
+                required
               />
               <span class="popup__error" id="place-name-error"></span>
             </label>
@@ -109,6 +111,7 @@
                 id="place-link"
                 class="popup__input popup__input_type_url"
                 placeholder="Ссылка на картинку"
+                required
               />
               <span class="popup__error" id="place-link-error"></span>
             </label>
@@ -131,20 +134,20 @@
         </div>
       </div>
 
-<!--      <div class="popup popup_type_remove-card">-->
-<!--        <div class="popup__content">-->
-<!--          <button type="button" class="popup__close"></button>-->
-<!--          <h3 class="popup__title">Вы уверены?</h3>-->
-<!--          <form class="popup__form" name="remove-card" novalidate>-->
-<!--            <button-->
-<!--              type="submit"-->
-<!--              class="button popup__button"-->
-<!--            >-->
-<!--              Да-->
-<!--            </button>-->
-<!--          </form>-->
-<!--        </div>-->
-<!--      </div>-->
+     <div class="popup popup_type_remove-card">
+       <div class="popup__content">
+         <button type="button" class="popup__close"></button>
+         <h3 class="popup__title">Вы уверены?</h3>
+         <form class="popup__form" name="remove-card" novalidate>
+           <button
+             type="submit"
+             class="button popup__button"
+           >
+             Да
+           </button>
+         </form>
+       </div>
+     </div>
 
       <div class="popup popup_type_edit-avatar">
         <div class="popup__content">
@@ -158,6 +161,7 @@
                 id="user-avatar"
                 class="popup__input popup__input_type_avatar"
                 placeholder="Ссылка на изображение"
+                required
               />
               <span class="popup__error" id="user-avatar-error"></span>
             </label>
@@ -196,12 +200,12 @@
           <h2 class="card__title"></h2>
           <div class="card__likes">
             <button type="button" class="card__like-button"></button>
-            <!--<p class="card__like-count"></p>-->
+            <p class="card__like-count"></p>
           </div>
         </div>
       </li>
     </template>
-
+ 
 <!--    <template id="popup-info-definition-template">-->
 <!--      <div class="popup__info-item">-->
 <!--        <dt class="popup__info-term"></dt>-->
